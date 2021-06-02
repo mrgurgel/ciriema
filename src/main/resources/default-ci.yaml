@@ -1,0 +1,27 @@
+name: codereview-pipeline
+sourceInfo:
+  git:
+    url: "https://github.com/mrgurgel/positional-tweak.git"
+    branch: master
+
+steps:
+  - name: compile
+    runIn: shell
+    commands:
+      - mvn clean install
+#    postProcessors:
+#      - name: coverage
+#        spec:
+#          regexToExtractCurrentCoverageFromConsole: (.*)
+#          minimumPercentageAccepted: 80
+
+  - name: sonar
+    runIn: shell
+    commands:
+      - docker run --rm -e SONAR_HOST_URL="http://" -e SONAR_LOGIN="aaaaaa" sonarsource/sonar-scanner-cli
+
+#    postProcessors:
+#      - name: sonar
+#        spec:
+#          acceptNewCriticalBugs: no
+#          urlOfPreviousAnalysis: https://sonar.company.de # For comparative purposes (old state x current state)

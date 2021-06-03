@@ -35,11 +35,5 @@ steps:
     commands:
       - docker run --rm -e SONAR_HOST_URL="http://" -e SONAR_LOGIN="aaaaaa" sonarsource/sonar-scanner-cli
 
-    postProcessors:
-      - name: sonar
-        spec:
-          acceptNewCriticalBugs: no
-          urlOfPreviousAnalysis: https://sonar.company.de # For comparative purposes (old state x current state)
-
 ```
 

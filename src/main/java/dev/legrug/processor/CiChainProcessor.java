@@ -33,8 +33,7 @@ public class CiChainProcessor implements QuarkusApplication {
 
         try {
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-
-            return mapper.readValue(new File("/Users/mrgurgel/git/ci-chain/src/main/resources/default-ci.yaml"), YamlConfig.class);
+            return mapper.readValue(System.getProperty("user.home") + "/default-ci.yaml", YamlConfig.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

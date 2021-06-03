@@ -38,3 +38,5 @@ steps:
 
 ```
 
+For the example above, the console will show:
+![CI chain result](https://github.com/mrgurgel/ci-chain/blob/main/src/main/docs/output-exemple.png?raw=true)

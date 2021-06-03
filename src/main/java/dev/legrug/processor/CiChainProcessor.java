@@ -1,5 +1,6 @@
 package dev.legrug.processor;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import dev.legrug.processor.yamlconfig.YamlConfig;
@@ -25,15 +26,14 @@ public class CiChainProcessor implements QuarkusApplication {
     }
 
     private String createWorkinDir() {
-        String directory = new StringBuilder().append("/tmp/ci-chain/").append(UUID.randomUUID()).toString();
-        return directory;
+        return new StringBuilder().append("/tmp/ci-chain/").append(UUID.randomUUID()).toString();
     }
 
     private YamlConfig loadYaml()  {
-
         try {
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-            return mapper.readValue(System.getProperty("user.home") + "/default-ci.yaml", YamlConfig.class);
+            mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+            return mapper.readValue(new File(System.getProperty("user.home") + "/default-ci.yaml"), YamlConfig.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

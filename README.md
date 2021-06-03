@@ -6,9 +6,10 @@ This Quarkus project allows you to run a CI pipeline strait from terminal, with 
 
 To start using it, all you need is:
 - Edit the .yaml file, specifying your CI steps;
-- Run ci-chain providing the yaml file
+- Past the .yaml file in your home directory;
+- Run ci-chain
 
-### Example: The yaml file
+### Learn it by example: The yaml file
 
 ```yaml
 name: codereview-pipeline

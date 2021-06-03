@@ -2,9 +2,10 @@ package dev.legrug.processor.yamlconfig;
 
 import dev.legrug.processor.MessageUtils;
 import dev.legrug.processor.ProcessBuilderWrapper;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
 import java.io.File;
-
+@RegisterForReflection
 public class Git {
 
     public String url;

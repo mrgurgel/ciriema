@@ -6,10 +6,11 @@ import dev.legrug.processor.ProcessBuilderWrapper;
 import dev.legrug.processor.cdi.NamedLiteral;
 import dev.legrug.processor.postprocessor.CoveragePostProcessor;
 import dev.legrug.processor.postprocessor.IPostProcessor;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
 import javax.enterprise.inject.spi.CDI;
 import java.util.List;
-
+@RegisterForReflection
 public class Step {
 
     public String name;

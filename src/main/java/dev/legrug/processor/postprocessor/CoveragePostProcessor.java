@@ -32,10 +32,9 @@ public class CoveragePostProcessor implements IPostProcessor {
     private Double findCurrentCoverage(String commandsOutput, Map<String, String> postProcessorParams) {
         Pattern pattern = Pattern.compile(postProcessorParams.get(PARAM_REGEX_TO_GET_THE_COVERAGE));
         Matcher matcher = pattern.matcher(commandsOutput);
-        int matches = 0;
         while (matcher.find()) {
             return Double.valueOf(matcher.group(EXPECTED_POSITION));
         }
-        throw new CIChainException("Couldnt extract the current coverage from console");
+        throw new CIChainException("Couldn't extract the current coverage from console");
     }
 }

@@ -10,6 +10,7 @@ public class ProcessBuilderWrapper {
 
     public static final int SUCCESS = 0;
     public static final int FIRST_COMMAND = 0;
+    public static final String REGEX_TO_SPLIT_SPACES_OUTSIDE_QUOTES = "\\s(?=(?:\"[^\"]*\"|[^\"])*$)";
     private ProcessBuilder processBuilder;
     private File currentWorkingDirectory;
     private int currentNumberOfExecutions = 1;
@@ -24,7 +25,7 @@ public class ProcessBuilderWrapper {
         createInitialDirectories(initialWorkingDirectory);
     }
 
-    private void createInitialDirectories(File initialWorkingDirectory)  {
+    private void createInitialDirectories(File initialWorkingDirectory) {
         try {
             processBuilder.command("mkdir", "-p", initialWorkingDirectory.getPath() + "/logs");
             processBuilder.start().waitFor();
@@ -40,24 +41,17 @@ public class ProcessBuilderWrapper {
         String[] commandArgs = splitCommand(commandWithVariables);
         int status = 0;
         try {
-            File logForThisCommand = new File(currentWorkingDirectory, "/logs/" + (currentNumberOfExecutions++) + "_" + commandArgs[FIRST_COMMAND] + ".log");
-            logForThisCommand.createNewFile();
-            processBuilder.redirectOutput(logForThisCommand);
-            processBuilder.redirectError(logForThisCommand);
+            File logForThisCommand = createALogForThisCommand(commandArgs);
+            redirectTheOutput(logForThisCommand);
             processBuilder.command(commandArgs);
 
             Instant startTime = Instant.now();
             Process process = processBuilder.start();
             status = process.waitFor();
 
-             if(status == SUCCESS) {
-                ExecutionResult executionResult = new ExecutionResult();
-                executionResult.duration = Duration.between(startTime, Instant.now());
-                executionResult.message = extractMessage(logForThisCommand);
-                executionResult.statusCode = status;
-                return executionResult;
-            }
-            else {
+            if (status == SUCCESS) {
+                return handleCommandWithSuccess(status, logForThisCommand, startTime);
+            } else {
                 handleCommandWithError(process, commandArgs, logForThisCommand);
             }
         } catch (IOException | InterruptedException e) {
@@ -67,12 +61,30 @@ public class ProcessBuilderWrapper {
 
     }
 
+    private void redirectTheOutput(File logForThisCommand) {
+        processBuilder.redirectOutput(logForThisCommand);
+        processBuilder.redirectError(logForThisCommand);
+    }
+
+    private File createALogForThisCommand(String[] commandArgs) throws IOException {
+        File logForThisCommand = new File(currentWorkingDirectory, "/logs/" + (currentNumberOfExecutions++) + "_" + commandArgs[FIRST_COMMAND] + ".log");
+        logForThisCommand.createNewFile();
+        return logForThisCommand;
+    }
+
+    private ExecutionResult handleCommandWithSuccess(int status, File logForThisCommand, Instant startTime) {
+        ExecutionResult executionResult = new ExecutionResult();
+        executionResult.duration = Duration.between(startTime, Instant.now());
+        executionResult.message = extractMessage(logForThisCommand);
+        executionResult.statusCode = status;
+        return executionResult;
+    }
+
     private String[] splitCommand(String commandWithVariables) {
-        return commandWithVariables.split("\\s(?=(?:\"[^\"]*\"|[^\"])*$)");
+        return commandWithVariables.split(REGEX_TO_SPLIT_SPACES_OUTSIDE_QUOTES);
     }
 
     private String doVariableSubstitution(String command) {
-
         return command.replaceAll("%CURRENT_WORKING_DIR", currentWorkingDirectory.getPath()).replaceAll("\n", " ");
     }
 
@@ -83,7 +95,6 @@ public class ProcessBuilderWrapper {
                 Arrays.stream(args).collect(Collectors.joining(" ")) +
                 "\n" + errorMessage);
     }
-
 
     private String extractMessage(File logFile) {
         try {

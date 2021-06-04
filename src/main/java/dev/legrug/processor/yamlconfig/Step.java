@@ -24,7 +24,12 @@ public class Step {
         if(!disabled) {
             boolean hasPostProcessors = postProcessors != null && !postProcessors.isEmpty();
             StringBuilder outputOfCommands = new StringBuilder();
+
+            String message = new StringBuilder().append("STEP: ").append(name).toString();
+            MessageUtils.print(MessageUtils.Emoji.STARTING, message);
+
             commands.forEach(command ->  {
+
                 ExecutionResult executionResult = executeCommand(processBuilder, command);
                 if(hasPostProcessors) {
                     outputOfCommands.append(executionResult.message);
@@ -33,24 +38,20 @@ public class Step {
 
             postProcessors.forEach(postProcessor ->
             {
-                    MessageUtils.print(MessageUtils.Emoji.SUB_STARTING, "Starting the post processor: " + postProcessor.name);
+                    MessageUtils.print(MessageUtils.Emoji.SUB_STARTING, "Runing the post processor: " + postProcessor.name);
                     CDI.current().select(IPostProcessor.class, new NamedLiteral(postProcessor.name)).get()
                             .doThePostProcessing(outputOfCommands.toString(), postProcessor.spec);
                     MessageUtils.print(MessageUtils.Emoji.FINISHED,"");
             });
-
-
         }
     }
 
     private ExecutionResult executeCommand(ProcessBuilderWrapper processBuilder, String command) {
-        String message = new StringBuilder().append("STEP: ").append(name).append(", COMMAND: ").append(command).toString();
-        MessageUtils.print(MessageUtils.Emoji.STARTING, message);
+        String message = new StringBuilder().append("COMMAND: ").append(command).toString();
+        MessageUtils.print(MessageUtils.Emoji.SUB_STARTING, message);
         ExecutionResult executionResult = processBuilder.executeAndWait(command.split(" "));
         MessageUtils.print(MessageUtils.Emoji.FINISHED, executionResult.prettyPrintDuration());
         return executionResult;
-
-
     }
 
 }

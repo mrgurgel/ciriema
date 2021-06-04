@@ -34,7 +34,7 @@ public class ProcessBuilderWrapper {
             Process process = processBuilder.start();
             status = process.waitFor();
 
-            if(status == SUCCESS) {
+             if(status == SUCCESS) {
                 ExecutionResult executionResult = new ExecutionResult();
                 executionResult.duration = Duration.between(startTime, Instant.now());
                 executionResult.message = extractCommandMessageAndWriteItToLog(process.getInputStream());

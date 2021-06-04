@@ -12,7 +12,7 @@ public class MessageUtils {
 
         STRONG("\uD83D\uDCAA", "\n"),
         ERROR("\u274E"),
-        STARTING("\uD83D\uDFE1", "... "),
+        STARTING("\uD83D\uDFE1", "\n"),
         SUB_STARTING("\t\uD83D\uDD38", "... "),
         FINISHED("\u2705", "\n"),
         ENTIRE_PROCESS_FINISHED("\uD83D\uDE80"),

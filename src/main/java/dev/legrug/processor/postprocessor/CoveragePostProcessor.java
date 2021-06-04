@@ -1,6 +1,7 @@
 package dev.legrug.processor.postprocessor;
 
 import dev.legrug.processor.CIChainException;
+import dev.legrug.processor.MessageUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
@@ -24,7 +25,8 @@ public class CoveragePostProcessor implements IPostProcessor {
 
         if(currentCoverage < minimumAcceptedCoverage) {
             StringBuilder errorMessage = new StringBuilder().append("The current coverage for the project is: ").append(currentCoverage)
-                    .append("\nThe minimum coverage is: ").append(minimumAcceptedCoverage);
+                    .append(". The minimum coverage is: ").append(minimumAcceptedCoverage);
+            MessageUtils.print(MessageUtils.Emoji.ERROR, errorMessage.toString());
             throw new CIChainException(errorMessage.toString());
         }
     }

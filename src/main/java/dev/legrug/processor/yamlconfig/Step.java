@@ -49,7 +49,7 @@ public class Step {
     private ExecutionResult executeCommand(ProcessBuilderWrapper processBuilder, String command) {
         String message = new StringBuilder().append("COMMAND: ").append(command).toString();
         MessageUtils.print(MessageUtils.Emoji.SUB_STARTING, message);
-        ExecutionResult executionResult = processBuilder.executeAndWait(command.split(" "));
+        ExecutionResult executionResult = processBuilder.executeAndWait(command);
         MessageUtils.print(MessageUtils.Emoji.FINISHED, executionResult.prettyPrintDuration());
         return executionResult;
     }

@@ -23,6 +23,8 @@ public class CoveragePostProcessor implements IPostProcessor {
         Double currentCoverage = findCurrentCoverage(commandsOutput, postProcessorParams);
         Double minimumAcceptedCoverage = Double.valueOf(postProcessorParams.get(PARAM_MINIMUM_PERCENTAGE_ACCEPTED));
 
+        MessageUtils.print(MessageUtils.Emoji.SUB_STARTING, "The current coverage is: " + currentCoverage);
+
         if(currentCoverage < minimumAcceptedCoverage) {
             StringBuilder errorMessage = new StringBuilder().append("The current coverage for the project is: ").append(currentCoverage)
                     .append(". The minimum coverage is: ").append(minimumAcceptedCoverage);

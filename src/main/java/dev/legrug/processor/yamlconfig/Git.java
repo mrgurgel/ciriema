@@ -13,7 +13,7 @@ public class Git {
 
 
     void process(ProcessBuilderWrapper processBuilder) {
-        processBuilder.executeAndWait("git", "clone", url);
+        processBuilder.executeAndWait("git clone " + url);
 
         String projectName = extractProjectName();
         processBuilder.goToWorkingDirectory(new File(processBuilder.currentDirectory(),
@@ -21,7 +21,7 @@ public class Git {
 
         MessageUtils.print(MessageUtils.Emoji.STARTING, "Checking out the project");
         if(!"master".equals(branch)) {
-            processBuilder.executeAndWait("git", "checkout", "-b", branch);
+            processBuilder.executeAndWait("git checkout -b " + branch);
         }
         MessageUtils.print(MessageUtils.Emoji.STRONG, "Git project checked out");
 

@@ -1,6 +1,6 @@
 package dev.legrug.processor.postprocessor;
 
-import dev.legrug.processor.CIChainException;
+import dev.legrug.processor.CiriemaException;
 import dev.legrug.processor.MessageUtils;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -29,7 +29,7 @@ public class CoveragePostProcessor implements IPostProcessor {
             StringBuilder errorMessage = new StringBuilder().append("The current coverage for the project is: ").append(currentCoverage)
                     .append(". The minimum coverage is: ").append(minimumAcceptedCoverage);
             MessageUtils.print(MessageUtils.Emoji.ERROR, errorMessage.toString());
-            throw new CIChainException(errorMessage.toString());
+            throw new CiriemaException(errorMessage.toString());
         }
     }
 
@@ -39,6 +39,6 @@ public class CoveragePostProcessor implements IPostProcessor {
         while (matcher.find()) {
             return Double.valueOf(matcher.group(EXPECTED_POSITION));
         }
-        throw new CIChainException("Couldn't extract the current coverage from console");
+        throw new CiriemaException("Couldn't extract the current coverage from console");
     }
 }

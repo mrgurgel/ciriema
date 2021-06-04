@@ -16,7 +16,8 @@ public class MessageUtils {
         SUB_STARTING("\t\uD83D\uDD38", "... "),
         FINISHED("\u2705", "\n"),
         ENTIRE_PROCESS_FINISHED("\uD83D\uDE80"),
-        INFO("\u2139");
+        INFO("\u2139", "\n"),
+        BIRD("\uD83E\uDDA4");
 
         private String code;
         private String sufix = "\n";

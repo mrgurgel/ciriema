@@ -1,14 +1,14 @@
 package dev.legrug.processor;
 
-public class CIChainException extends RuntimeException{
+public class CiriemaException extends RuntimeException{
 
     private String message;
 
-    public CIChainException(Exception e) {
+    public CiriemaException(Exception e) {
         super(e);
     }
 
-    public CIChainException(String message) {
+    public CiriemaException(String message) {
         this.message = message;
     }
 

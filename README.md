@@ -1,4 +1,4 @@
-# ci-chain
+# ciriema
 
 This Quarkus project allows you to run a CI pipeline strait from terminal, with an simple yaml configuration.
 
@@ -7,7 +7,7 @@ This Quarkus project allows you to run a CI pipeline strait from terminal, with 
 To start using it, all you need is:
 - Edit the .yaml file, specifying your CI steps;
 - Past the .yaml file in your home directory;
-- Run ci-chain
+- Run ciriema
 
 ### Learn it by example: The yaml file
 
@@ -15,28 +15,22 @@ To start using it, all you need is:
 name: codereview-pipeline
 sourceInfo:
   git:
-    url: "https://github.com/mrgurgel/positional-tweak.git"
+    url: "https://github.com/ttzoutz/jenkin-devops-microservice.git" # Random project that I picked-up from the internet
     branch: master
 
 steps:
   - name: compile
     runIn: shell
     commands:
-      - mvn clean install
-      - 'echo The current coverage is: 81%'
+      - mvn package
+      - java -jar /Users/mrgurgel/apps/jacoco-0.8.7/lib/jacococli.jar report target/jacoco.exec --classfiles ./target/classes --html /tmp/jacoco-report
+      - cat /tmp/jacoco-report/index.html
     postProcessors:
       - name: coverage
         spec:
-          regexToExtractCurrentCoverageFromConsole: 'The current coverage is: (.*)%'
+          regexToExtractCurrentCoverageFromConsole: 'title="1" alt="1"\/><\/td><td class="ctr2" id="e1">(.*)%<\/td>'
           minimumPercentageAccepted: 80
-
-  - name: sonar
-    disabled: true
-    runIn: shell
-    commands:
-      - docker run --rm -e SONAR_HOST_URL="http://" -e SONAR_LOGIN="aaaaaa" sonarsource/sonar-scanner-cli
-
 ```
 
 For the example above, the console will show:
-![CI chain result](https://github.com/mrgurgel/ci-chain/blob/main/src/main/docs/output-exemple.png?raw=true)
+![Ciriema result](https://github.com/mrgurgel/ciriema/blob/main/src/main/docs/output-exemple.png?raw=true)

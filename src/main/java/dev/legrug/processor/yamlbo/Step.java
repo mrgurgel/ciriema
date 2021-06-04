@@ -1,10 +1,9 @@
-package dev.legrug.processor.yamlconfig;
+package dev.legrug.processor.yamlbo;
 
 import dev.legrug.processor.ExecutionResult;
 import dev.legrug.processor.MessageUtils;
 import dev.legrug.processor.ProcessBuilderWrapper;
 import dev.legrug.processor.cdi.NamedLiteral;
-import dev.legrug.processor.postprocessor.CoveragePostProcessor;
 import dev.legrug.processor.postprocessor.IPostProcessor;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 

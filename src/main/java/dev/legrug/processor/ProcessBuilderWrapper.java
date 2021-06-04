@@ -1,14 +1,9 @@
 package dev.legrug.processor;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ProcessBuilderWrapper {
@@ -21,6 +16,7 @@ public class ProcessBuilderWrapper {
 
     public ProcessBuilderWrapper(File initialWorkingDirectory) {
         currentWorkingDirectory = initialWorkingDirectory;
+        MessageUtils.print(MessageUtils.Emoji.BIRD, "Welcome to CIriema!");
         MessageUtils.print(MessageUtils.Emoji.INFO, "All files in this CI process will be in: " + initialWorkingDirectory.getPath() + "\n\t" +
                 "The log files will be located in: " + currentWorkingDirectory.getPath() + "/logs");
 
@@ -65,7 +61,7 @@ public class ProcessBuilderWrapper {
                 handleCommandWithError(process, commandArgs, logForThisCommand);
             }
         } catch (IOException | InterruptedException e) {
-            throw new CIChainException(e);
+            throw new CiriemaException(e);
         }
         return null;
 
@@ -83,7 +79,7 @@ public class ProcessBuilderWrapper {
     private void handleCommandWithError(Process process, String[] args, File logForThisCommand) {
         String errorMessage = extractMessage(logForThisCommand);
 
-        throw new CIChainException(" - There was an error wile processing the comand: " +
+        throw new CiriemaException(" - There was an error wile processing the comand: " +
                 Arrays.stream(args).collect(Collectors.joining(" ")) +
                 "\n" + errorMessage);
     }

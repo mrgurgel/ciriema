@@ -1,4 +1,4 @@
-package dev.legrug.processor.yamlconfig;
+package dev.legrug.processor.yamlbo;
 
 import dev.legrug.processor.MessageUtils;
 import dev.legrug.processor.ProcessBuilderWrapper;

@@ -77,7 +77,7 @@ yoooooooooooooooooooooooooooooooooohNNNhdmmNmNhhhdysssoooooooooosooooooooooooooo
 
 To start using it, all you need is:
 - Edit the .yaml file, specifying your CI steps;
-- Past the .yaml file in your home directory;
+- Paste the .yaml file in your home directory;
 - Run ciriema: `mvn clean package && java -jar target/quarkus-app/quarkus-run.jar`
 
 ### Learn it by example: The yaml file

@@ -27,22 +27,33 @@ public class Step {
             String message = new StringBuilder().append("STEP: ").append(name).toString();
             MessageUtils.print(MessageUtils.Emoji.STARTING, message);
 
-            commands.forEach(command ->  {
+            doCommands(processBuilder, hasPostProcessors, outputOfCommands);
 
-                ExecutionResult executionResult = executeCommand(processBuilder, command);
-                if(hasPostProcessors) {
-                    outputOfCommands.append(executionResult.message);
-                }
-            });
+            if(postProcessors != null) {
+                doPostProcessors(outputOfCommands);
+            }
 
-            postProcessors.forEach(postProcessor ->
-            {
-                    MessageUtils.print(MessageUtils.Emoji.SUB_STARTING, "Runing the post processor: " + postProcessor.name);
-                    CDI.current().select(IPostProcessor.class, new NamedLiteral(postProcessor.name)).get()
-                            .doThePostProcessing(outputOfCommands.toString(), postProcessor.spec);
-                    MessageUtils.print(MessageUtils.Emoji.FINISHED,"");
-            });
         }
+    }
+
+    private void doCommands(ProcessBuilderWrapper processBuilder, boolean hasPostProcessors, StringBuilder outputOfCommands) {
+        commands.forEach(command ->  {
+
+            ExecutionResult executionResult = executeCommand(processBuilder, command);
+            if(hasPostProcessors) {
+                outputOfCommands.append(executionResult.message);
+            }
+        });
+    }
+
+    private void doPostProcessors(StringBuilder outputOfCommands) {
+        postProcessors.forEach(postProcessor ->
+        {
+            MessageUtils.print(MessageUtils.Emoji.SUB_STARTING, "Runing the post processor: " + postProcessor.name);
+            CDI.current().select(IPostProcessor.class, new NamedLiteral(postProcessor.name)).get()
+                    .doThePostProcessing(outputOfCommands.toString(), postProcessor.spec);
+            MessageUtils.print(MessageUtils.Emoji.FINISHED,"");
+        });
     }
 
     private ExecutionResult executeCommand(ProcessBuilderWrapper processBuilder, String command) {
